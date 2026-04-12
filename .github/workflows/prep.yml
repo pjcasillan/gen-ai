@@ -36,7 +36,7 @@ jobs:
   #         path: lambda/lambda.zip
 
   terraform-validate:
-    needs: prep
+    # needs: prep
     runs-on: ubuntu-latest
 
     steps:
