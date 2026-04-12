@@ -5,7 +5,3 @@ output "bucket_name" {
 output "role_arn" {
   value = aws_iam_role.bedrock_role.arn
 }
-
-output "collection_arn" {
-  value = aws_opensearchserverless_collection.vector.arn
-}
