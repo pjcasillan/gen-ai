@@ -11,6 +11,10 @@ on:
     branches:
       - main
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   prep:
     runs-on: ubuntu-latest
@@ -68,7 +72,7 @@ jobs:
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::917675236035:role/github-role
+          role-to-assume: ${{ secrets.GENAI_OIDC_ROLEARN }}
           aws-region: ap-southeast-2
 
       - name: Generate Terraform tfvars file
@@ -82,3 +86,4 @@ jobs:
         run: |
           cd terraform
           terraform plan
+          
