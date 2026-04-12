@@ -21,7 +21,7 @@ jobs:
         run: |
           cd lambda/ingest/
           pip install -r requirements.txt --target .
-          zip -r ../lambda.zip ./ingest
+          zip -r ../lambda.zip ../ingest/
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
