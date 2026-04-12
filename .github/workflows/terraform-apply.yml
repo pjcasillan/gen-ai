@@ -16,11 +16,11 @@ jobs:
       name: development
 
     steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: lambda-pkg
-          path: terraform
+      # - name: Download artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: lambda-pkg
+      #     path: terraform
 
       - name: Checkout
         uses: actions/checkout@v4

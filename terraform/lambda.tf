@@ -4,8 +4,8 @@ resource "aws_lambda_function" "bedrock_ingestion" {
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.11"
 
-  filename         = "lambda.zip"
-  source_code_hash = filebase64sha256("lambda.zip")
+  filename         = data.archive_file.lambda_zip.output_path
+  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
 
   environment {
     variables = {
@@ -35,8 +35,8 @@ resource "aws_iam_role" "ingestion_lambda_role" {
   })
 }
 
-resource "aws_iam_role_policy" "lambda_ingest_policy" {
-  role = aws_iam_role.ingestion_lambda_role.id
+resource "aws_iam_policy" "lambda_ingest_policy" {
+  name = "lambda-ingest-policy"
 
   policy = jsonencode({
     Version = "2012-10-17",
@@ -55,5 +55,5 @@ resource "aws_iam_role_policy" "lambda_ingest_policy" {
 
 resource "aws_iam_role_policy_attachment" "attach_ingestion_policy" {
   role       = aws_iam_role.ingestion_lambda_role.name
-  policy_arn = aws_iam_role_policy.lambda_ingest_policy.arn
+  policy_arn = aws_iam_policy.lambda_ingest_policy.arn
 }
