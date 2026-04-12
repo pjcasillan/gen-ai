@@ -29,8 +29,8 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
+        working-directory: terraform
         run: |
-          cd terraform
           terraform init \
             -backend-config="bucket=${{ secrets.GENAI_S3_BACKEND_BUCKET }}" \
             -backend-config="key=${{ secrets.GENAI_BACKEND_STATE_KEY }}" \
@@ -49,4 +49,5 @@ jobs:
           echo "backend_state_key = \"${{ secrets.BACKEND_STATE_KEY }}\"" >> terraform/terraform.tfvars
 
       - name: Terraform Apply
+        working-directory: terraform
         run: terraform apply -auto-approve

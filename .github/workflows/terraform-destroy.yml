@@ -27,12 +27,13 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
+        working-directory: terraform
         run: |
-          cd terraform
           terraform init \
             -backend-config="bucket=${{ secrets.GENAI_S3_BACKEND_BUCKET }}" \
             -backend-config="key=${{ secrets.GENAI_BACKEND_STATE_KEY }}" \
             -backend-config="region=${{ secrets.GENAI_REGION }}"
 
       - name: Terraform Destroy
+        working-directory: terraform
         run: terraform destroy -auto-approve
