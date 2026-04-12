@@ -3,8 +3,7 @@ name: "Terraform Init and Validate"
 on:
   workflow_run:
     workflows: ["Prep"]
-    types:
-      - completed
+    types: ["completed"]
 
 permissions:
   id-token: write
