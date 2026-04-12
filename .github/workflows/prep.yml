@@ -56,9 +56,9 @@ jobs:
         run: |
           cd terraform
           terraform init \
-            -backend-config="bucket=${{ secrets.S3_BACKEND_BUCKET }}" \
-            -backend-config="key=${{ secrets.STATE_KEY }}" \
-            -backend-config="region=${{ secrets.AWS_REGION }}"
+            -backend-config="bucket=${{ secrets.GENAI_S3_BACKEND_BUCKET }}" \
+            -backend-config="key=${{ secrets.GENAI_BACKEND_STATE_KEY }}" \
+            -backend-config="region=${{ secrets.GENAI_REGION }}"
 
       - name: Terraform Format Check
         run:  |
@@ -88,9 +88,9 @@ jobs:
         run: |
           cd terraform
           terraform init \
-            -backend-config="bucket=${{ secrets.S3_BACKEND_BUCKET }}" \
-            -backend-config="key=${{ secrets.STATE_KEY }}" \
-            -backend-config="region=${{ secrets.AWS_REGION }}"
+            -backend-config="bucket=${{ secrets.GENAI_S3_BACKEND_BUCKET }}" \
+            -backend-config="key=${{ secrets.GENAI_BACKEND_STATE_KEY }}" \
+            -backend-config="region=${{ secrets.GENAI_REGION }}"
 
       - name: Generate Terraform tfvars file
         run: |
