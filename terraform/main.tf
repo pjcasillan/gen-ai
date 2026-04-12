@@ -14,7 +14,7 @@ terraform {
 }
 
 provider "aws" {
-  region  = var.region
+  region = var.region
 }
 
 data "archive_file" "lambda_zip" {
