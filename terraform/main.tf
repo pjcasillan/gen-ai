@@ -10,9 +10,6 @@ terraform {
 
   backend "s3" {
     encrypt = true
-    bucket  = var.s3_backend_bucket
-    key     = var.backend_state_key
-    region  = var.region
   }
 }
 

@@ -35,7 +35,7 @@ jobs:
           name: lambda-pkg
           path: lambda/lambda.zip
 
-  terraform-init-validate:
+  terraform-validate:
     needs: prep
     runs-on: ubuntu-latest
 
@@ -55,7 +55,10 @@ jobs:
       - name: Terraform Init
         run: |
           cd terraform
-          terraform init
+          terraform init \
+            -backend-config="bucket=${{ secrets.S3_BACKEND_BUCKET }}" \
+            -backend-config="key=${{ secrets.STATE_KEY }}" \
+            -backend-config="region=${{ secrets.AWS_REGION }}"
 
       - name: Terraform Format Check
         run:  |
@@ -68,25 +71,31 @@ jobs:
           terraform validate ./terraform
 
   terraform-plan:
-    needs: terraform-init-validate
+    needs: terraform-validate
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        
+
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.GENAI_OIDC_ROLEARN }}
           aws-region: ap-southeast-2
 
+      - name: Terraform Init
+        run: |
+          cd terraform
+          terraform init \
+            -backend-config="bucket=${{ secrets.S3_BACKEND_BUCKET }}" \
+            -backend-config="key=${{ secrets.STATE_KEY }}" \
+            -backend-config="region=${{ secrets.AWS_REGION }}"
+
       - name: Generate Terraform tfvars file
         run: |
           echo "region = \"${{ secrets.AWS_REGION }}\"" > terraform/terraform.tfvars
           echo "project_name = \"${{ secrets.PROJECT_NAME }}\"" >> terraform/terraform.tfvars
-          echo "s3_backend_bucket = \"${{ secrets.S3_BACKEND_BUCKET }}\"" >> terraform/terraform.tfvars
-          echo "backend_state_key = \"${{ secrets.BACKEND_STATE_KEY }}\"" >> terraform/terraform.tfvars
 
       - name: Terraform Plan
         run: |
