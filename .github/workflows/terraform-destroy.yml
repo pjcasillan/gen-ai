@@ -1,21 +1,17 @@
-on:
-  push:
-    branches:
-      - main
-      - "feature/**"
-      - "bugfix/**"
+name: terraform-destroy
 
-  pull_request:
-    branches:
-      - main
+on:
+  workflow_dispatch:
 
 permissions:
   id-token: write
   contents: read
 
 jobs:
-  gen-ai-pipeline:
+  terraform-destroy:
     runs-on: ubuntu-latest
+    environment:
+      name: development
 
     steps:
       - name: Checkout
@@ -30,11 +26,5 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
-      - name: Terraform Format Check
-        run: terraform fmt -check -recursive
-
-      # - name: Terraform Init
-      #   run: terraform init
-
-      # - name: Terraform Plan
-      #   run: terraform plan
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve

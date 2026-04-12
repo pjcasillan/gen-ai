@@ -1,7 +1,15 @@
 variable "region" {
-  default = "ap-southeast-2"
+  type = string
 }
 
 variable "project_name" {
-  default = "genai"
+  type = string
+}
+
+variable "s3_backend_bucket" {
+  type = string
+}
+
+variable "backend_state_key" {
+  type = string
 }

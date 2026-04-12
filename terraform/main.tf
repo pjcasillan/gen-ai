@@ -10,13 +10,13 @@ terraform {
 
   backend "s3" {
     encrypt = true
-    bucket  = "terraform-state-bucket-917675236035-ap-southeast-2-an"
-    key     = "terraform.tfstate"
-    region  = "ap-southeast-2"
+    bucket  = var.s3_backend_bucket
+    key     = var.backend_state_key
+    region  = var.region
   }
 }
 
 provider "aws" {
-  region  = "ap-southeast-2"
+  region  = var.region
   profile = "default"
 }
