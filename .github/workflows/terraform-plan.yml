@@ -1,6 +1,8 @@
+name: "Terraform Plan"
+
 on:
   workflow_run:
-    workflows: ["terraform-init-validate"]
+    workflows: ["Terraform Init and Validate"]
     types:
       - completed
 
