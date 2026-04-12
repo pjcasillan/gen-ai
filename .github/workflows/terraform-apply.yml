@@ -1,7 +1,7 @@
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: ["Terraform Plan"]
+    workflows: ["Prep, Terraform Init and Validate, Terraform Plan"]
     types: ["completed"]
 
 permissions:
@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 jobs:
-  terraform-validate:
+  terraform-apply:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     environment:

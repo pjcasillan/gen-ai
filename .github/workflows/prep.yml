@@ -1,4 +1,4 @@
-name: Prep
+name: "Prep, Terraform Init and Validate, Terraform Plan"
 
 on:
   push:
@@ -30,3 +30,54 @@ jobs:
         with:
           name: lambda-pkg
           path: lambda/lambda.zip
+
+  terraform-init-validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::917675236035:role/github-role
+          aws-region: ap-southeast-2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: |
+          cd terraform
+          terraform init
+
+      - name: Terraform Format Check
+        run:  |
+          cd terraform
+          terraform fmt -check -recursive
+
+      - name: Terraform Validate
+        run:  |
+          cd terraform
+          terraform validate ./terraform
+
+  terraform-plan:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::917675236035:role/github-role
+          aws-region: ap-southeast-2
+
+      - name: Generate Terraform tfvars file
+        run: |
+          echo "region = \"${{ secrets.AWS_REGION }}\"" > terraform/terraform.tfvars
+          echo "project_name = \"${{ secrets.PROJECT_NAME }}\"" >> terraform/terraform.tfvars
+          echo "s3_backend_bucket = \"${{ secrets.S3_BACKEND_BUCKET }}\"" >> terraform/terraform.tfvars
+          echo "backend_state_key = \"${{ secrets.BACKEND_STATE_KEY }}\"" >> terraform/terraform.tfvars
+
+      - name: Terraform Plan
+        run: |
+          cd terraform
+          terraform plan
