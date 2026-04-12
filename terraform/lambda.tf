@@ -55,5 +55,5 @@ resource "aws_iam_role_policy" "lambda_ingest_policy" {
 
 resource "aws_iam_role_policy_attachment" "attach_ingestion_policy" {
   role       = aws_iam_role.ingestion_lambda_role.name
-  policy_arn = aws_iam_policy.lambda_bedrock_policy.arn
+  policy_arn = aws_iam_policy.lambda_ingest_policy.arn
 }
