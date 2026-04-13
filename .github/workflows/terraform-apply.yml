@@ -1,7 +1,7 @@
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: ["Terraform Plan"]
+    workflows: ["Prep, Terraform Init and Validate, Terraform Plan"]
     types: ["completed"]
 
 permissions:
@@ -9,13 +9,19 @@ permissions:
   contents: read
 
 jobs:
-  terraform-validate:
+  terraform-apply:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     environment:
       name: development
 
     steps:
+      # - name: Download artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: lambda-pkg
+      #     path: terraform
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -27,6 +33,14 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        working-directory: terraform
+        run: |
+          terraform init \
+            -backend-config="bucket=${{ secrets.GENAI_S3_BACKEND_BUCKET }}" \
+            -backend-config="key=${{ secrets.GENAI_BACKEND_STATE_KEY }}" \
+            -backend-config="region=${{ secrets.GENAI_REGION }}"
 
       - name: Download artifact
         uses: actions/download-artifact@v4
@@ -41,4 +55,5 @@ jobs:
           echo "backend_state_key = \"${{ secrets.BACKEND_STATE_KEY }}\"" >> terraform/terraform.tfvars
 
       - name: Terraform Apply
+        working-directory: terraform
         run: terraform apply -auto-approve

@@ -10,13 +10,15 @@ terraform {
 
   backend "s3" {
     encrypt = true
-    bucket  = var.s3_backend_bucket
-    key     = var.backend_state_key
-    region  = var.region
   }
 }
 
 provider "aws" {
-  region  = var.region
-  profile = "default"
+  region = var.region
+}
+
+data "archive_file" "lambda_zip" {
+  type        = "zip"
+  source_dir  = "${path.module}/../lambda"
+  output_path = "${path.module}/lambda.zip"
 }
