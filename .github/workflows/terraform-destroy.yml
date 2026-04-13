@@ -34,6 +34,11 @@ jobs:
             -backend-config="key=${{ secrets.GENAI_BACKEND_STATE_KEY }}" \
             -backend-config="region=${{ secrets.GENAI_REGION }}"
 
+      - name: Generate Terraform tfvars file
+        run: |
+          echo "region = \"${{ secrets.GENAI_REGION }}\"" > terraform/terraform.tfvars
+          echo "project_name = \"${{ secrets.GENAI_PROJECT_NAME }}\"" >> terraform/terraform.tfvars
+
       - name: Terraform Destroy
         working-directory: terraform
         run: terraform destroy -auto-approve

@@ -36,10 +36,8 @@ jobs:
 
       - name: Generate Terraform tfvars file
         run: |
-          echo "region = \"${{ secrets.AWS_REGION }}\"" > terraform/terraform.tfvars
-          echo "project_name = \"${{ secrets.PROJECT_NAME }}\"" >> terraform/terraform.tfvars
-          echo "s3_backend_bucket = \"${{ secrets.S3_BACKEND_BUCKET }}\"" >> terraform/terraform.tfvars
-          echo "backend_state_key = \"${{ secrets.BACKEND_STATE_KEY }}\"" >> terraform/terraform.tfvars
+          echo "region = \"${{ secrets.GENAI_REGION }}\"" > terraform/terraform.tfvars
+          echo "project_name = \"${{ secrets.GENAI_PROJECT_NAME }}\"" >> terraform/terraform.tfvars
 
       - name: Terraform Apply
         working-directory: terraform
