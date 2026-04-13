@@ -3,7 +3,6 @@ name: "Prep, Terraform Init and Validate, Terraform Plan"
 on:
   push:
     branches:
-      - main
       - "feature/**"
       - "bugfix/**"
 
