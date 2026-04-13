@@ -16,12 +16,6 @@ jobs:
       name: development
 
     steps:
-      # - name: Download artifact
-      #   uses: actions/download-artifact@v4
-      #   with:
-      #     name: lambda-pkg
-      #     path: terraform
-
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -41,11 +35,6 @@ jobs:
             -backend-config="bucket=${{ secrets.GENAI_S3_BACKEND_BUCKET }}" \
             -backend-config="key=${{ secrets.GENAI_BACKEND_STATE_KEY }}" \
             -backend-config="region=${{ secrets.GENAI_REGION }}"
-
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: lambda-pkg
 
       - name: Generate Terraform tfvars file
         run: |
