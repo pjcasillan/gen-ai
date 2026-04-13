@@ -1,8 +1,5 @@
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: ["Prep, Terraform Init and Validate, Terraform Plan"]
-    types: ["completed"]
 
 permissions:
   id-token: write
