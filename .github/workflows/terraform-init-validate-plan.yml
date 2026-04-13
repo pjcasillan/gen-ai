@@ -3,7 +3,6 @@ name: "Prep, Terraform Init and Validate, Terraform Plan"
 on:
   push:
     branches:
-      - main
       - "feature/**"
       - "bugfix/**"
 
@@ -16,36 +15,11 @@ permissions:
   contents: read
 
 jobs:
-  # prep:
-  #   runs-on: ubuntu-latest
-
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
-
-  #     - name: Build lambda package
-  #       run: |
-  #         cd lambda/ingest/
-  #         pip install -r requirements.txt --target .
-  #         zip -r ../lambda.zip ../ingest/
-
-  #     - name: Upload artifact
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: lambda-pkg
-  #         path: lambda/lambda.zip
-
   terraform-validate:
     # needs: prep
     runs-on: ubuntu-latest
 
     steps:
-      # - name: Download artifact
-      #   uses: actions/download-artifact@v4
-      #   with:
-      #     name: lambda-pkg
-      #     path: terraform
-
       - name: Checkout
         uses: actions/checkout@v4
 
